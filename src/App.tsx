@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+import Home from './pages/Home/Home';
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,7 +32,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <h2>Hello AWS!</h2>
+        <Home />
       </ThemeProvider>
     </>
   );

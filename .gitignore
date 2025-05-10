@@ -5,6 +5,8 @@ node_modules/
 node_modules
 /dist
 dist/
+/build
+build/
 # netbeans project files
 nbproject
 
