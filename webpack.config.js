@@ -34,6 +34,31 @@ module.exports = (env, argv) => {
           warnings: false,
         },
       },
+      // 代理配置，用于解决 CORS 问题
+      proxy: {
+        '/api': {
+          target: 'https://chatgpt-proxy.harlanhai7023.workers.dev',
+          pathRewrite: { '^/api': '' },
+          changeOrigin: true,
+          secure: false,
+          // 添加以下配置解决超时问题
+          timeout: 60000, // 增加超时时间到60秒
+          proxyTimeout: 60000, // 代理特定超时
+          // 添加以下配置以获取更详细的错误信息
+          logLevel: 'debug', // 启用详细日志
+          onError: (err, req, res) => {
+            console.error('代理请求错误:', err);
+          },
+          onProxyReq: (proxyReq, req, res) => {
+            // 修改代理请求头
+            proxyReq.setHeader('Connection', 'keep-alive');
+            console.log(`代理请求: ${req.method} ${req.url}`);
+          },
+          onProxyRes: (proxyRes, req, res) => {
+            console.log(`代理响应: ${proxyRes.statusCode} ${req.url}`);
+          }
+        },
+      },
     },
     module: {
       rules: [
@@ -137,7 +162,7 @@ module.exports = (env, argv) => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        title: "myDApp",
+        title: "myGPT",
         template: './public/index.html',
         inject: true,
         favicon: '',

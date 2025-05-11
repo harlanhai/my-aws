@@ -40,8 +40,8 @@ function Home() {
   }, []);
   return (
     <>
-      <div className='w-1/3 h-40 w-auto'>
-        <h2>Hello AWS!</h2>
+      <div className='w-full text-center h-60 text-5xl'>
+        <h2>Harlan's AI</h2>
         <div>My workers data: {info?.name}</div>
       </div>
     </>

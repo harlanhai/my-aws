@@ -1,40 +1,25 @@
 import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { createApolloClient } from './client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { darkTheme } from '@/utils/muiTheme';
 
-import Home from './pages/Home/Home';
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#FF93B3',
-      main: '#FF007A',
-      dark: '#B3005C',
-    },
-    secondary: {
-      light: '#CBD5E0',
-      main: '#2D3748',
-      dark: '#1A202C',
-    },
-  },
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-  },
-});
+import ChatGPTComponent from './components/ChatGPTComp';
 
 function App() {
+  const graphqlEndpoint = 'https://openai-graphql-api.harlanhai7023.workers.dev';
+    // 创建 Apollo Client 实例
+  const client = createApolloClient(graphqlEndpoint);
+  // const workerUrl = 'https://chatgpt-proxy.harlanhai7023.workers.dev';
+  // 使用相对路径，会通过 Webpack 代理转发
+  const workerUrl = '/api';
+
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Home />
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={darkTheme}>
+        <ChatGPTComponent />
       </ThemeProvider>
-    </>
+    </ApolloProvider>
   );
 }
 
