@@ -5,7 +5,6 @@ import {
   Typography, 
   CircularProgress, 
   ThemeProvider, 
-  createTheme, 
   Box, 
   IconButton, 
   Avatar,
@@ -167,9 +166,9 @@ const ChatGPTComponent: React.FC = () => {
         </div>
 
         {/* 消息区域 */}
-        <Container maxWidth="md" className="flex-grow px-0 mx-auto">
+        <div className="w-full flex-grow px-0 mx-auto overflow-y-scroll">
           <div 
-            className="messages-container"
+            className="flex-grow p-4 pb-4 space-y-4 h-fit"
             // style={scrollbarStyles.scrollContainer}
           >
             {messages.length === 0 ? (
@@ -232,11 +231,11 @@ const ChatGPTComponent: React.FC = () => {
               </div>
             )}
           </div>
-        </Container>
+        </div>
 
         {/* 输入区域 */}
-        <div className="p-4 bg-gray-800 border-t border-gray-700 flex justify-center">
-          <Container maxWidth="md" className="w-4/5">
+        <div className="p-4 border-t border-gray-700 flex justify-center">
+          <div className="w-4/5">
             <Box
               component="form"
               className="flex items-center space-x-2"
@@ -271,7 +270,7 @@ const ChatGPTComponent: React.FC = () => {
                 )}
               </IconButton>
             </Box>
-          </Container>
+          </div>
         </div>
       </div>
     </ThemeProvider>
