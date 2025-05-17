@@ -4,22 +4,23 @@ import { createApolloClient } from './client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { darkTheme } from '@/utils/muiTheme';
 
-import ChatGPTComponent from './components/ChatGPTComp';
+// import ChatGPTComponent from './components/ChatGPTComp';
+import McpComponent from './components/McpComp';
 
 function App() {
-  const graphqlEndpoint = 'https://openai-graphql-api.harlanhai7023.workers.dev';
+  // const graphqlEndpoint = 'https://openai-graphql-api.harlanhai7023.workers.dev';
     // 创建 Apollo Client 实例
-  const client = createApolloClient(graphqlEndpoint);
+  // const client = createApolloClient(graphqlEndpoint);
   // const workerUrl = 'https://chatgpt-proxy.harlanhai7023.workers.dev';
   // 使用相对路径，会通过 Webpack 代理转发
-  const workerUrl = '/api';
+  // const workerUrl = '/api';
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <ThemeProvider theme={darkTheme}>
-        <ChatGPTComponent />
+        <McpComponent />
       </ThemeProvider>
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 }
 

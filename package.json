@@ -17,8 +17,10 @@
     "@apollo/client": "^3.13.8",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mastra/client-js": "^0.1.22",
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
+    "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
@@ -34,6 +36,7 @@
     "graphql": "^16.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
     "typescript": "^5.3.3",
     "web-vitals": "^3.5.1"
   },
