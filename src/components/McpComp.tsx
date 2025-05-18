@@ -5,9 +5,15 @@ import { CssBaseline } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import { darkTheme } from '@/utils/muiTheme';
 import { MastraClient } from '@mastra/client-js';
+import { isWeatherQuery, isCodeQuery } from '@/utils/mcp'; // 引入查询分类器函数
 
-const client = new MastraClient({ baseUrl: 'https://harlan-mcp-production.harlanhai7023.workers.dev' });
+// const baseUrl = 'https://harlan-mcp-production.harlanhai7023.workers.dev';
+const baseUrl = 'https://my-mastra-app-production.harlanhai7023.workers.dev'; // 生产环境
+// const baseUrl = 'http://localhost:4111'; // 本地开发环境
+const client = new MastraClient({ baseUrl: baseUrl });
 const weatherAgent = await client.getAgent('weatherAgent');
+const codeCheckAgent = await client.getAgent('codeCheckAgent');
+const defaultAgent = await client.getAgent('defaultAgent');
 
 // 定义消息类型
 interface Message {
@@ -32,9 +38,25 @@ const McpComponent: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // 判断用户输入的消息类型
+  const typeAgents = (input: string): string => {
+    // 简单的路由逻辑
+    let agentName;
+
+    if (isWeatherQuery(input)) {
+      agentName = 'weatherAgent';
+    } else if (isCodeQuery(input)) {
+      agentName = 'codeCheckAgent';
+    } else {
+      // 提供一个默认响应
+      agentName = 'defaultAgent';
+    }
+    return agentName;
+  };
   const handleSendMessage = async () => {
     if (!input.trim()) return;
-
+    const agentName = typeAgents(input);
+    console.log('agentName', agentName);
     // 创建用户消息
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -48,46 +70,43 @@ const McpComponent: React.FC = () => {
     setInput(''); // 清空输入框
 
     try {
-      const response = await weatherAgent.generate({
-        messages: [
-          {
-            role: 'user',
-            content: userMessage.text,
-          },
-        ],
-      });
-      // Process data stream with the processDataStream util
-      // response.processDataStream({
-      //   onTextPart: (text) => {
-      //     // process.stdout.write(text);
-      //      // 创建机器人回复消息
-      //     const mcpMessage: Message = {
-      //       id: Date.now().toString(),
-      //       text: text,
-      //       sender: 'MCP',
-      //       timestamp: new Date(),
-      //     };
-      //     console.log('mcpMessage', mcpMessage);
-      //     setMessages((prevMessages) => [...prevMessages, mcpMessage]);
-      //   },
-      //   onFilePart: (file) => {
-      //     console.log(file);
-      //   },
-      //   onDataPart: (data) => {
-      //     console.log(data);
-      //   },
-      //   onErrorPart: (error) => {
-      //     console.error(error);
-      //   },
-      // });
-      // 创建机器人回复消息
-      const mcpMessage: Message = {
-        id: response.response.id,
-        text: response.text,
-        sender: 'MCP',
-        timestamp: new Date(),
-      };
-      setMessages((prevMessages) => [...prevMessages, mcpMessage]);
+      let response;
+      if (agentName === 'weatherAgent') {
+        response = await weatherAgent.generate({
+          messages: [
+            {
+              role: 'user',
+              content: userMessage.text,
+            },
+          ],
+        });
+      } else if (agentName === 'codeCheckAgent') {
+        response = await codeCheckAgent.generate({
+          messages: [
+            {
+              role: 'user',
+              content: userMessage.text,
+            },
+          ],
+        });
+      } else {
+        response = await defaultAgent.generate({
+          messages: [
+            {
+              role: 'user',
+              content: userMessage.text,
+            },
+          ],
+        });
+        // 创建机器人回复消息
+        const mcpMessage: Message = {
+          id: response?.response.id as string,
+          text: response?.text as string,
+          sender: 'MCP',
+          timestamp: new Date(),
+        };
+        setMessages((prevMessages) => [...prevMessages, mcpMessage]);
+      }
     } catch (error) {
       console.error('发送消息错误:', error);
 
@@ -155,9 +174,7 @@ const McpComponent: React.FC = () => {
                       >
                         <Typography variant="body1" component="div" className="whitespace-pre-wrap">
                           {/* 使用 markdown 过滤返回数据 */}
-                          <ReactMarkdown>
-                            {message.text}
-                          </ReactMarkdown>
+                          <ReactMarkdown>{message.text}</ReactMarkdown>
                         </Typography>
                         <Typography variant="caption" className="block mt-1 text-xs opacity-70">
                           {formatTime(message.timestamp)}
