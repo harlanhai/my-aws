@@ -13,7 +13,7 @@ const baseUrl = 'https://my-mastra-app-production.harlanhai7023.workers.dev'; //
 const client = new MastraClient({ baseUrl: baseUrl });
 const weatherAgent = await client.getAgent('weatherAgent');
 const codeCheckAgent = await client.getAgent('codeCheckAgent');
-const defaultAgent = await client.getAgent('defaultAgent');
+const routerAgent = await client.getAgent('routerAgent');
 
 // 定义消息类型
 interface Message {
@@ -90,7 +90,7 @@ const McpComponent: React.FC = () => {
           ],
         });
       } else {
-        response = await defaultAgent.generate({
+        response = await routerAgent.generate({
           messages: [
             {
               role: 'user',
@@ -98,15 +98,15 @@ const McpComponent: React.FC = () => {
             },
           ],
         });
-        // 创建机器人回复消息
-        const mcpMessage: Message = {
-          id: response?.response.id as string,
-          text: response?.text as string,
-          sender: 'MCP',
-          timestamp: new Date(),
-        };
-        setMessages((prevMessages) => [...prevMessages, mcpMessage]);
       }
+      // 创建机器人回复消息
+      const mcpMessage: Message = {
+        id: response?.response.id as string,
+        text: response?.text as string,
+        sender: 'MCP',
+        timestamp: new Date(),
+      };
+      setMessages((prevMessages) => [...prevMessages, mcpMessage]);
     } catch (error) {
       console.error('发送消息错误:', error);
 
@@ -145,7 +145,7 @@ const McpComponent: React.FC = () => {
         {/* 标题栏 */}
         <div className="bg-gray-800 py-4 px-6 shadow-md">
           <Typography variant="h5" className="text-center font-semibold text-green-500">
-            Harlan's Agent
+            Harlan's MCP
           </Typography>
         </div>
 
