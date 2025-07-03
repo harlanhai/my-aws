@@ -1,21 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import App from '@pages/App'
+
 import './index.css';
-import App from './App';
+import "./wdyr";
+import { createRoot } from 'react-dom/client';
 
-// 找到根元素
-const rootElement = document.getElementById('root');
-
-// 确保根元素存在
-if (!rootElement) {
-  throw new Error('Root element not found');
+const container = document.getElementById('app')
+if(!container) {
+  throw new Error('Failed to find the root element')  
 }
-
-// 创建 React 根
-const root = ReactDOM.createRoot(rootElement);
-
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const root = createRoot(container);
+root.render(<App />)

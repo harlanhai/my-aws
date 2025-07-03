@@ -13,7 +13,7 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import { CssBaseline } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { SEND_MESSAGE } from '@/client';
+import { SEND_MESSAGE } from '../client';
 import { darkTheme } from '@/utils/muiTheme';
 
 // 定义消息类型

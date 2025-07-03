@@ -1,9 +1,36 @@
 {
+  "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {
     "parser": {
-      "syntax": "typescript", // 支持 ts
-      "tsx": true, // 支持 React
-      "dynamicImport": true // 动态引用文件
-    }
-  }
+      "syntax": "typescript",
+      "tsx": true,
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true,
+      "react": {
+        "runtime": "automatic",
+        "refresh": true,
+        "development": false,
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment"
+      }
+    },
+    "target": "es2022",
+    "loose": true,
+    "externalHelpers": true,
+    "keepClassNames": true
+  },
+  "module": {
+    "type": "es6",
+    "strict": true,
+    "strictMode": true,
+    "lazy": true,
+    "noInterop": false
+  },
+  "minify": true,
+  "sourceMaps": true,
+  "exclude": ["node_modules", ".git", "dist"]
 }

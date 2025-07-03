@@ -11,9 +11,9 @@ import { isWeatherQuery, isCodeQuery } from '@/utils/mcp'; // 引入查询分类
 const baseUrl = 'https://my-mastra-app-production.harlanhai7023.workers.dev'; // 生产环境
 // const baseUrl = 'http://localhost:4111'; // 本地开发环境
 const client = new MastraClient({ baseUrl: baseUrl });
-const weatherAgent = await client.getAgent('weatherAgent');
-const codeCheckAgent = await client.getAgent('codeCheckAgent');
-const routerAgent = await client.getAgent('routerAgent');
+const weatherAgent = client.getAgent('weatherAgent');
+const codeCheckAgent = client.getAgent('codeCheckAgent');
+const routerAgent = client.getAgent('routerAgent');
 
 // 定义消息类型
 interface Message {
